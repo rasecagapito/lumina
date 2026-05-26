@@ -1,6 +1,7 @@
 import { supabase } from './supabase'
 
 const API_URL = import.meta.env.VITE_API_URL
+if (!API_URL) throw new Error('Missing VITE_API_URL')
 
 async function getAuthHeaders(): Promise<Record<string, string>> {
   const { data } = await supabase.auth.getSession()
