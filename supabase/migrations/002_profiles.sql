@@ -30,3 +30,9 @@ create policy "profiles_update_admin" on profiles
     (select role from profiles where id = auth.uid()) = 'admin'
     and church_id = (select church_id from profiles where id = auth.uid())
   );
+
+-- churches_select deferred here because it references profiles (created above)
+create policy "churches_select" on churches
+  for select using (
+    id = (select church_id from profiles where id = auth.uid())
+  );
