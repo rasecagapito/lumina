@@ -1,6 +1,8 @@
 export type Role = 'admin' | 'lider' | 'membro'
 export type Source = 'lumina' | 'external'
-export type InviteStatus = 'pending' | 'accepted' | 'expired'
+export type ChurchPlan = 'free' | 'basic' | 'pro' | 'enterprise'
+export type ProfileStatus = 'ativo' | 'inativo' | 'visitante'
+export type InviteStatus = 'pendente' | 'aceito' | 'expirado'
 export type SlotStatus = 'pendente' | 'confirmado' | 'recusado' | 'substituido'
 export type NotificationChannel = 'whatsapp' | 'email'
 export type NotificationType = 'invite' | 'scale' | 'reminder' | 'custom'
@@ -10,7 +12,7 @@ export interface Church {
   id: string
   name: string
   slug: string
-  plan: string
+  plan: ChurchPlan
   source: Source
   external_id: string | null
   synced_at: string | null
@@ -24,7 +26,7 @@ export interface Profile {
   full_name: string
   phone: string | null
   avatar_url: string | null
-  status: 'ativo' | 'inativo' | 'visitante'
+  status: ProfileStatus
   source: Source
   external_id: string | null
   synced_at: string | null
@@ -37,6 +39,7 @@ export interface Invite {
   email: string
   role: Role
   token: string
+  status: InviteStatus
   accepted_at: string | null
   expires_at: string
   created_by: string
@@ -53,6 +56,13 @@ export interface AcceptInviteRequest {
   password: string
 }
 
+export interface UpdateProfileRequest {
+  full_name?: string
+  phone?: string
+  avatar_url?: string
+}
+
 export interface AuthContext {
   profile: Profile
+  church_id: string
 }
