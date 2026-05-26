@@ -1,0 +1,12 @@
+node_modules/
+dist/
+build/
+.env
+.env.local
+.env.production
+.env.development
+*.key
+*.pem
+.turbo/
+.supabase/
+coverage/
