@@ -78,7 +78,11 @@ authRouter.post(
       return c.json({ error: 'Failed to create profile' }, 500)
     }
 
-    await acceptInvite(token)
+    try {
+      await acceptInvite(token)
+    } catch {
+      // Non-fatal: user and profile created successfully
+    }
     return c.json({ message: 'Account created successfully' }, 201)
   }
 )
