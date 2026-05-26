@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -18,6 +18,7 @@ type LoginForm = z.infer<typeof loginSchema>
 
 export function LoginPage() {
   const navigate = useNavigate()
+  const location = useLocation()
   const [error, setError] = useState<string | null>(null)
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } =
@@ -30,7 +31,9 @@ export function LoginPage() {
       setError('Email ou senha incorretos')
       return
     }
-    navigate('/')
+    const params = new URLSearchParams(location.search)
+    const redirectTo = params.get('redirectTo') ?? '/'
+    navigate(redirectTo)
   }
 
   return (

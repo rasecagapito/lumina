@@ -28,6 +28,8 @@ export function AcceptInvitePage() {
   const { register, handleSubmit, formState: { errors, isSubmitting } } =
     useForm<AcceptForm>({ resolver: zodResolver(acceptSchema) })
 
+  if (!token) return <p>Token inválido.</p>
+
   const onSubmit = async (data: AcceptForm) => {
     setError(null)
     try {

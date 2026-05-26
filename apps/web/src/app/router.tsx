@@ -1,12 +1,13 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { LoginPage } from '@/features/auth/pages/LoginPage'
 import { AcceptInvitePage } from '@/features/auth/pages/AcceptInvitePage'
 import { useAuth } from '@/features/auth/hooks/useAuth'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { session, loading } = useAuth()
+  const location = useLocation()
   if (loading) return <div>Carregando...</div>
-  if (!session) return <Navigate to="/login" replace />
+  if (!session) return <Navigate to={`/login?redirectTo=${encodeURIComponent(location.pathname)}`} replace />
   return <>{children}</>
 }
 
