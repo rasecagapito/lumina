@@ -1,0 +1,39 @@
+name: Deploy HOM
+
+on:
+  push:
+    branches: [hom]
+
+jobs:
+  deploy-api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run migrations (HOM)
+        run: pnpm supabase db push --project-ref ${{ secrets.SUPABASE_HOM_PROJECT_REF }}
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+      - name: Deploy API to Railway
+        run: |
+          npm install -g @railway/cli
+          railway up --service api
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_HOM_TOKEN }}
+        working-directory: apps/api
+
+  # Vercel deploy handled automatically via Vercel GitHub integration
+  # hom branch → HOM environment in Vercel
