@@ -10,3 +10,8 @@ build/
 .turbo/
 .supabase/
 coverage/
+.vite/
+.DS_Store
+*.log
+npm-debug.log*
+supabase/.branches/
