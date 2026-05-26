@@ -9,11 +9,13 @@ declare module 'hono' {
   }
 }
 
+const SUPABASE_URL = process.env.SUPABASE_URL
+if (!SUPABASE_URL) throw new Error('Missing SUPABASE_URL')
+
 let jwks: ReturnType<typeof createRemoteJWKSet> | null = null
 
 function getJwks() {
   if (!jwks) {
-    const SUPABASE_URL = process.env.SUPABASE_URL!
     jwks = createRemoteJWKSet(
       new URL(`${SUPABASE_URL}/auth/v1/.well-known/jwks.json`)
     )
