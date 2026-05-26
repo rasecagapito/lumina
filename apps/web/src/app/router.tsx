@@ -15,7 +15,7 @@ export function AppRouter() {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/invite/:token" element={<AcceptInvitePage />} />
+        <Route path="/accept/:token" element={<AcceptInvitePage />} />
         <Route
           path="/dashboard"
           element={
@@ -24,7 +24,14 @@ export function AppRouter() {
             </ProtectedRoute>
           }
         />
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Navigate to="/dashboard" replace />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   )

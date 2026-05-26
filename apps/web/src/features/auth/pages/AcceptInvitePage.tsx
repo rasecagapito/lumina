@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -12,18 +12,18 @@ import { api } from '@/shared/lib/api-client'
 const acceptSchema = z.object({
   full_name: z.string().min(2, 'Nome deve ter ao menos 2 caracteres'),
   password: z.string().min(8, 'Senha deve ter ao menos 8 caracteres'),
-  confirm_password: z.string(),
-}).refine(d => d.password === d.confirm_password, {
+  confirmPassword: z.string(),
+}).refine(d => d.password === d.confirmPassword, {
   message: 'Senhas não conferem',
-  path: ['confirm_password'],
+  path: ['confirmPassword'],
 })
 
 type AcceptForm = z.infer<typeof acceptSchema>
 
 export function AcceptInvitePage() {
   const { token } = useParams<{ token: string }>()
-  const navigate = useNavigate()
   const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState(false)
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } =
     useForm<AcceptForm>({ resolver: zodResolver(acceptSchema) })
@@ -35,10 +35,27 @@ export function AcceptInvitePage() {
         full_name: data.full_name,
         password: data.password,
       })
-      navigate('/login')
+      setSuccess(true)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao criar conta')
     }
+  }
+
+  if (success) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <Card className="w-full max-w-sm">
+          <CardHeader>
+            <CardTitle>Conta criada!</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-slate-600">
+              Sua conta foi criada com sucesso. Você já pode fazer login.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    )
   }
 
   return (
@@ -64,10 +81,10 @@ export function AcceptInvitePage() {
               )}
             </div>
             <div className="space-y-1">
-              <Label htmlFor="confirm_password">Confirmar senha</Label>
-              <Input id="confirm_password" type="password" {...register('confirm_password')} />
-              {errors.confirm_password && (
-                <p className="text-sm text-red-500">{errors.confirm_password.message}</p>
+              <Label htmlFor="confirmPassword">Confirmar senha</Label>
+              <Input id="confirmPassword" type="password" {...register('confirmPassword')} />
+              {errors.confirmPassword && (
+                <p className="text-sm text-red-500">{errors.confirmPassword.message}</p>
               )}
             </div>
             {error && <p className="text-sm text-red-500">{error}</p>}

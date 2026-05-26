@@ -11,7 +11,7 @@ import { supabase } from '@/shared/lib/supabase'
 
 const loginSchema = z.object({
   email: z.string().email('Email inválido'),
-  password: z.string().min(1, 'Senha obrigatória'),
+  password: z.string().min(8, 'Mínimo 8 caracteres'),
 })
 
 type LoginForm = z.infer<typeof loginSchema>
@@ -30,7 +30,7 @@ export function LoginPage() {
       setError('Email ou senha incorretos')
       return
     }
-    navigate('/dashboard')
+    navigate('/')
   }
 
   return (
