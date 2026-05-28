@@ -1,6 +1,6 @@
 # PROD.md — Espelho Técnico do Projeto Lumina
 
-> Atualizado em: 2026-05-28
+> Atualizado em: 2026-05-28 16:06
 > Branch ativo: `dev`
 
 ---
@@ -42,8 +42,8 @@
 
 | Ambiente | Branch | API | Frontend | Supabase |
 |----------|--------|-----|----------|----------|
-| Produção | `main` | Railway PRD | Vercel PRD | Self-hosted Coolify — `supabase.hagap.online` (ref: `hagap-selfhosted-prd`) |
-| Homologação | `hom` | Railway HOM | Vercel HOM | Supabase cloud — `znpqxsuxcwwfafztjxya` (lumina-hom) |
+| Produção | `main` | Coolify PRD (`api-prd.hagap.online`) | Vercel PRD | Self-hosted Coolify — `supabase.hagap.online` |
+| Homologação | `hom` | Coolify HOM (`api-hom.hagap.online`) ✅ | Vercel HOM | Supabase cloud — `znpqxsuxcwwfafztjxya` |
 | Desenvolvimento | `dev` | localhost:3001 | localhost:5173 | HOM |
 
 ### Fluxo obrigatório
@@ -66,7 +66,18 @@ Nunca push direto em `main`. Toda alteração passa por `dev` → PR para `hom` 
 
 ---
 
-## 4. Estrutura do Monorepo
+## 4. Deploy — decisões técnicas
+
+| Decisão | Detalhe |
+|---------|---------|
+| API runtime | CommonJS (não ESM) — evita problema de extensão `.js` em imports |
+| Node version | 22-alpine no Dockerfile — WebSocket nativo para Supabase realtime |
+| Build context Docker | `/` (raiz do monorepo) — necessário para resolver `@lumina/types` |
+| Domínio Coolify | Deve ter `https://` — gera labels Traefik corretos |
+
+---
+
+## 5. Estrutura do Monorepo
 
 ```text
 C:\Dev\Lumina\
@@ -218,9 +229,12 @@ Todas as tabelas sincronizáveis têm:
 - Supabase HOM provisionado ✅ — PRD self-hosted no Coolify (`supabase.hagap.online`) ✅
 - Proteções de branch `main` e `hom` ativas no GitHub ✅
 - 5 secrets HOM configurados no GitHub Actions ✅
-- Railway e Vercel não configurados ainda ⏳
-- Secrets PRD não configurados ainda ⏳ (aguarda Railway)
-- CORS não implementado na API (necessário antes do primeiro deploy)
+- API HOM online em `api-hom.hagap.online` ✅ — `{"status":"ok"}`
+- Railway substituído por Coolify (VPS própria) para API HOM e PRD
+- SSL `api-hom.hagap.online` pendente (Coolify emitindo automaticamente)
+- Vercel HOM (frontend) não configurado ainda ⏳
+- `deploy-hom.yml` desatualizado — ainda usa Railway CLI, precisa trocar por webhook Coolify
+- CORS restrito a `localhost:5173` e `lumina.vercel.app` — atualizar após Vercel configurado
 - PRD usa Supabase self-hosted: `supabase db push` via `--db-url`, não `--project-ref`
 - `sync_logs` sem RLS — acessível apenas via service-role (intencional)
 - Tailwind v3 obrigatório (v4 incompatível com shadcn/ui)
