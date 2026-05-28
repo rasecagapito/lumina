@@ -5,7 +5,7 @@ on:
     branches: [hom]
 
 jobs:
-  deploy-api:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -16,7 +16,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -27,13 +27,11 @@ jobs:
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
 
-      - name: Deploy API to Railway
+      - name: Trigger Coolify deploy (API HOM)
         run: |
-          npm install -g @railway/cli
-          railway up --service api
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_HOM_TOKEN }}
-        working-directory: apps/api
+          curl --silent --fail --show-error \
+            -X GET "${{ secrets.COOLIFY_HOM_WEBHOOK_URL }}" \
+            -H "Authorization: Bearer ${{ secrets.COOLIFY_API_TOKEN }}"
 
   # Vercel deploy handled automatically via Vercel GitHub integration
   # hom branch → HOM environment in Vercel
