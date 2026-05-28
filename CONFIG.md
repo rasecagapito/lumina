@@ -710,7 +710,7 @@ Essa sequência deve orientar todas as atividades do projeto.
 | Camada | Tecnologia |
 |--------|-----------|
 | Frontend | React 18 + TypeScript + Vite + shadcn/ui + Tailwind v3 |
-| Backend API | Hono (Node.js) — deploy Railway |
+| Backend API | Hono (Node.js) — deploy Coolify (VPS própria) |
 | Banco / Auth | Supabase (Postgres + RLS + Auth) — dois projetos: PRD e HOM |
 | Automações | n8n + Evolution API (WhatsApp) + Resend (email) |
 | Deploy frontend | Vercel |
@@ -755,10 +755,13 @@ supabase/
 | Supabase HOM (`znpqxsuxcwwfafztjxya`) | ✅ Provisionado + migrations aplicadas |
 | Supabase PRD (self-hosted Coolify, `supabase.hagap.online`) | ✅ Disponível |
 | Proteções de branch `main` e `hom` | ✅ Ativas no GitHub |
-| Secrets GitHub Actions (HOM) | ✅ 5 secrets configurados |
-| Secrets GitHub Actions (PRD) | ⏳ Pendente |
-| Configurar Railway (API HOM + PRD) | ⏳ Pendente |
-| Configurar Vercel (web HOM + PRD) | ⏳ Pendente |
+| Secrets GitHub Actions (HOM + PRD) | ✅ 12 secrets configurados |
+| API HOM no Coolify (`api-hom.hagap.online`) | ✅ Online — `{"status":"ok"}` |
+| `deploy-hom.yml` | ✅ Atualizado — Coolify webhook |
+| SSL `api-hom.hagap.online` | ⚠️ Pendente (Coolify emitindo automaticamente) |
+| Vercel HOM (frontend) | ⏳ Pendente |
+| API PRD no Coolify | ⏳ Pendente |
+| Vercel PRD (frontend) | ⏳ Pendente |
 
 ### Módulos planejados (Fase 1)
 
@@ -784,12 +787,10 @@ supabase/
 
 ### Último checkpoint
 
-`checkpoint/CHECKPOINT_20260526_2113.md`
+`checkpoint/CHECKPOINT_20260528_1630.md`
 
 ### Próxima etapa
 
-1. Configurar secrets PRD no GitHub Actions
-2. Configurar Railway HOM (API deploy) + `RAILWAY_HOM_TOKEN`
-3. Configurar Vercel HOM (frontend deploy)
-4. Criar `deploy-prd.yml` adaptado para Supabase self-hosted (`--db-url`)
-5. Brainstorming do primeiro módulo da Fase 1 (Auth+Membros recomendado)
+1. Configurar Vercel HOM (frontend deploy)
+2. Criar `deploy-prd.yml` para Supabase self-hosted (`--db-url`) + Coolify PRD
+3. Brainstorming do primeiro módulo da Fase 1 (Auth+Membros recomendado)

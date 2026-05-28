@@ -1,6 +1,6 @@
 # TASK.md — Controle de Tarefas
 
-> Atualizado em: 2026-05-26
+> Atualizado em: 2026-05-28
 
 ---
 
@@ -14,7 +14,7 @@
 | ✅ Concluído | Alta | Proteções de branch `main` e `hom` | Via GitHub API |
 | ✅ Concluído | Média | Deploy API HOM no Coolify | `api-hom.hagap.online` ✅ |
 | ✅ Concluído | Média | Aplicar migrations no HOM | `supabase db push` |
-| ⏳ Pendente | Alta | Atualizar `deploy-hom.yml` | Trocar Railway por webhook Coolify |
+| ✅ Concluído | Alta | Atualizar `deploy-hom.yml` | Railway → Coolify webhook + COOLIFY_API_TOKEN |
 | ⏳ Pendente | Média | Configurar Vercel (web HOM) | Vercel GitHub integration |
 | ⏳ Pendente | Baixa | Deploy API PRD no Coolify | Após HOM validado |
 | ⏳ Pendente | Baixa | Configurar Vercel (web PRD) | Após HOM validado |
